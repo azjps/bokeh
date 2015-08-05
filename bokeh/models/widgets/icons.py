@@ -3,7 +3,7 @@
 """
 from __future__ import absolute_import
 
-from ...properties import Bool, Float, Enum
+from ...properties import Bool, Float, Enum, Int
 from ...enums import NamedIcon
 from ..widget import Widget
 
@@ -34,4 +34,9 @@ class Icon(AbstractIcon):
     spin = Bool(False, help="""
     Indicates a spinning (animated) icon. This value is ignored for
     icons that do not support spinning.
+    """)
+
+    spin_updates = Int(0, help="""
+    This is a dummy field for generated a second callback if the spin state has
+    been updated.
     """)
