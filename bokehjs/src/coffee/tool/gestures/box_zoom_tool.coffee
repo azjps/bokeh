@@ -46,7 +46,9 @@ class BoxZoomToolView extends GestureTool.View
     # If the viewing window is too small, no-op: it is likely that the user did
     # not intend to make this box zoom and instead was trying to cancel out of the
     # zoom, a la matplotlib's ToolZoom. Like matplotlib, set the threshold at 5 pixels.
-    if Math.abs(vxlim[1] - vxlim[0]) <= 5 or Math.abs(vylim[1] - vylim[0]) <= 5
+    dims = @mget('dimensions')
+    if (Math.abs(vxlim[1] - vxlim[0]) <= 5 and dims.indexOf('width') >= 0) or
+        (Math.abs(vylim[1] - vylim[0]) <= 5 and dims.indexOf('height') >= 0)
       return
 
     xrs = {}
