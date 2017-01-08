@@ -29,6 +29,7 @@ from autocomplete_input import AutocompleteInput
 
 # Properties for autocompletion
 completions = dir(__builtins__)
+completions += ["option{i}".format(i=i) for i in range(10, 0, -1)]
 min_chars = 2
 auto_first = False
 
@@ -56,7 +57,7 @@ button = Button(label="Submit new option",
 slider = Slider(start=0, end=10, value=min_chars, step=1,
                 title="Min length to trigger autocomplete")
 
-checkboxes = CheckboxButtonGroup(labels=["Auto Focus First",
+checkboxes = CheckboxButtonGroup(labels=["Auto Focus First", "Sorted"
                                         ],
                                  active=[])
 
@@ -89,7 +90,12 @@ def on_checkbox(attr, old_value, new_value):
     print("Checked options:", attr, new_value)
     auto_first = 0 in new_value
     for a_input in all_inputs:
-        a_input.auto_first = auto_first
+        if hasattr(a_input, "auto_first"):
+            a_input.auto_first = auto_first
+    do_sort = 1 in new_value
+    for a_input in all_inputs:
+        if hasattr(a_input, "sort"):
+            a_input.sort = do_sort
 checkboxes.on_change("active", on_checkbox)
 
 curdoc().add_root(layout([[div],

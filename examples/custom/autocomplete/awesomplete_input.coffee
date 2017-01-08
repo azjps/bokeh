@@ -15,12 +15,26 @@ export class AwesompleteInputView extends TextInputView
     # will cause the entire input element to be redrawn. Not sure
     # if there's significant performance penalty to this.
     @awesomplete = new Awesomplete($input[0])
-    @awesomplete.list = @model.completions
+    # @awesomplete.list = @model.completions
+    @awesomplete.list =
+        for val, index in @model.completions
+          {"label": val, "value": val, "index": index}
     @awesomplete.minChars = @model.min_chars
     @awesomplete.maxItems = @model.max_items
     @awesomplete.autoFirst = @model.auto_first
+    # By default, awesomplete sorts by length first.
+    # Override to use the ordering provided by user.
+    if not @model.sort
+      @awesomplete.sort = (a, b) -> a["index"] - b["index"]
     # Normalize label display to other textinput widgets
     @$el.find("div.awesomplete").css("display", "block")
+
+    # Listen for autocompletion selection and emit on_change callback
+    this_wrap = @
+    $input.on("awesomplete-selectcomplete", (text) ->
+        console.log("Selected", text)
+        this_wrap.change_input()
+        )
     return @
 
 export class AwesompleteInput extends TextInput
@@ -33,4 +47,5 @@ export class AwesompleteInput extends TextInput
     min_chars: [ p.Number, 2 ]
     max_items: [ p.Number, 10 ]
     auto_first: [ p.Bool, false ]
+    sort: [ p.Bool, false ]
   }

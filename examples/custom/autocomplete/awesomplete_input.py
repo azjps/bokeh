@@ -25,3 +25,8 @@ class AwesompleteInput(TextInput):
     auto_first = Bool(default=False, help="""
     Whether the first element should be automatically selected
     """)
+
+    sort = Bool(default=False, help="""
+    Whether to sort completions using awesomplete's default implementation
+    (sort by length first, then lexicographic sort for ties).
+    """)
