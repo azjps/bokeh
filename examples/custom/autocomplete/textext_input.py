@@ -1,7 +1,9 @@
-from bokeh.core.properties import List, String, Int, Bool
-from bokeh.models.widgets import TextInput
+from bokeh.core.properties import List, String, Int, Bool, Instance
+from bokeh.models.callbacks import Callback
+from bokeh.models.widgets import InputWidget
 
-class TextExtInput(TextInput):
+# TODO: should inherit from a MultiTextInputWidget or similar
+class TextExtInput(InputWidget):
     """ Single-line input widget with multiple tag auto-completion.
 
     FIXME: JQuery plugin?
@@ -12,6 +14,19 @@ class TextExtInput(TextInput):
                       "https://cdnjs.cloudflare.com/ajax/libs/jquery-textext/1.3.0/jquery.textext.min.js",
                      ]
     __css__ = ["https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css"]
+
+    value = List(String, help="""
+    Initial or entered text values.
+    """)
+
+    callback = Instance(Callback, help="""
+    A callback to run in the browser whenever the user unfocuses the TextInput
+    widget by hitting Enter or clicking outside of the text box area.
+    """)
+
+    placeholder = String(default="", help="""
+    Placeholder for empty input field
+    """)
 
     completions = List(String, help="""
     A list of completion strings. This will be used to guide the

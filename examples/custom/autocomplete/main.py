@@ -28,7 +28,7 @@ from bokeh.plotting import curdoc
 
 from awesomplete_input import AwesompleteInput
 from autocomplete_input import AutocompleteInput
-# from textext_input import TextExtInput
+from textext_input import TextExtInput
 from token_input import TokenInput
 
 # Properties for autocompletion
@@ -59,13 +59,13 @@ awes_input = AwesompleteInput(completions=completions,
 #     wiring for such.
 #  3. Selecting an autocompletion and then losing focus / pressing enter
 #     does not seem to trigger an on_change() callback.
-## text_input = TextExtInput(completions=completions,
-##                           title="textext")
+textext_input = TextExtInput(completions=completions,
+                          title="textext")
 token_input = TokenInput(completions=completions,
                          title="token")
 all_inputs = [auto_input,
               awes_input,
-              # text_input,
+              textext_input,
               token_input]
 
 new_input = TextInput(value="foo bar",
@@ -87,7 +87,7 @@ def on_input_value_update(attr, old_value, new_value):
     """Display current contents of autocompletion inputs"""
     div_values.text = "Current values:" + " | ".join([a.value for a in (auto_input, awes_input)] +
                                                      [str(a.value) for a in (token_input,)])
-for a_input in [auto_input, awes_input, token_input,]:
+for a_input in all_inputs:
     a_input.on_change("value", on_input_value_update)
 
 # Register callbacks to change properties of autocompletion menus,
